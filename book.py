@@ -8,6 +8,13 @@ import sys
 class DownloadBook(object):
 
     def __init__(self,url,path=None):
+        
+        '''
+            params:
+                url:包含所有章节目录的页面
+                path:最后生成的txt的路径
+        '''
+        
         self.path = path
         self.url = url
         self.contents = {}
@@ -24,10 +31,10 @@ class DownloadBook(object):
         for chapter in self.chapters:
             #生成每章地址
             chapter_url = self.url+str(chapter)+'.html'
-            print chapter_url
             r_content = requests.get(chapter_url)
-            print 'doing %s,%s'%(chapter,r_content)
-            #使用BS获取content
+            #显示进程
+            print 'processing %s,%s'%(chapter_url,r_content)
+            #使用BS获取content和title
             soup = BeautifulSoup(r_content.content,'lxml')
             content = soup.find('div',id='content')
             chapter_title = soup.find('h1')
@@ -46,8 +53,10 @@ class DownloadBook(object):
         f.close()
 
 if __name__ == '__main__':
+    #Windows环境，设置编码为utf-8
     reload(sys)
     sys.setdefaultencoding('utf-8')
+    
     url = 'http://www.zwdu.com/book/8017/'
     app = DownloadBook(url)
     app.get_dirs()
