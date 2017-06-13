@@ -17,7 +17,6 @@ class DownloadBook(object):
         
         self.path = path
         self.url = url
-        self.contents = {}
 
     def get_dirs(self):
         r_dir = requests.get(self.url)
